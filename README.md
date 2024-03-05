@@ -1,49 +1,47 @@
-# Telegram API Package
+# Weather Forecast Telegram Bot
 
-This Go package provides a convenient way to interact with the Telegram Bot API. It includes functionalities for handling incoming Telegram webhook requests, sending responses to users, and registering custom commands.
+# Overview
+This Telegram bot provides users with daily weather forecast notifications at a chosen time in the UTC timezone. Users can subscribe and unsubscribe to receive these notifications based on their preferences.
+
+## Features
+**Subscription**: Users can subscribe to receive daily weather forecast notifications.\
+**Unsubscription**: Users can unsubscribe at any time to stop receiving weather updates.
 
 ## Installation
+Clone this repository:
+```
+git clone https://github.com/c1kzy/Telegram-Subscription-Bot.git
+cd task-2.5-subscription-bot
 
-To use this package, you can install it using the following `go get` command:
+```
+Click the link "https://t.me/SubscriptionWeatherBot" and run the bot
 
-```bash
-go get "github.com/c1kzy/Telegram-API"
+Deploy a server
+You can deploy your server any way you want, but I find it really quick and easy to use ngrok. Ngrok allows you to expose applications running on your local machine to the public internet.
+
+How to install it?
+You can download it from the website directly
+
+```
+https://ngrok.com/download
+```
+or install ngrok via Chocolatey
+```
+$ choco install ngrok
 ```
 
-## Usage
+Running a server using ngrok
+Once you install ngrok, you can run this command on another terminal on your system:
+```
+ngrok http <port>
+```
+Example:
+```
+ngrok http port 8080
+```
+Here, https://ed40-178-150-143-55.ngrok.io is the public temporary URL for the server running on port 8080 of my machine.
+Now, all we need to do is let telegram know that our bot has to talk to this url whenever it receives any message. We do this through the telegram API. Enter this in your terminal :
+```
+curl -F "url=https://ed40-178-150-143-55.ngrok.io"  https://api.telegram.org/bot<your_api_token>/setWebhook
+```
 
-``` go
-package main
-
-import (
-	"fmt"
-	"github.com/c1kzy/Telegram-API"
-)
-
-func main() {
-    // Initialize the configuration
-    cfg := &telegram_api.Config{
-        Token: "YOUR_TELEGRAM_BOT_TOKEN",
-    }
-
-    // Get the API instance
-    api := telegram_api.GetAPI(cfg)
-
-    // Register custom commands
-    api.RegisterCommand("/start", func(body *telegram_api.WebHookReqBody, chatID int) (url.Values, error) {
-        // Your custom command logic here
-        return url.Values{"chat_id": {fmt.Sprintf("%d", chatID)}, "text": {"Hello, welcome to the bot!"}}, nil
-    })
-
-    // Register custom user input handler
-    api.RegisterInput(func(body *telegram_api.WebHookReqBody, chatID int) (url.Values, error) {
-        // Your custom user input logic here
-        return url.Values{"chat_id": {fmt.Sprintf("%d", chatID)}, "text": {"Sorry, I couldn't understand your request."}}, nil
-    })
-
-    // Start the HTTP server to handle incoming Telegram webhook requests
-    http.HandleFunc("/webhook", api.TelegramHandler)
-    if err := http.ListenAndServe(":8080", nil); err != nil {
-        fmt.Println("Error starting the server:", err)
-    }
-}
