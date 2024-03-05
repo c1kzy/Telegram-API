@@ -1,4 +1,4 @@
-module git.foxminded.ua/foxstudent106270/telegramapi.git
+module "github.com/c1kzy/Telegram-API"
 
 go 1.21.1
 
