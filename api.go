@@ -16,7 +16,10 @@ var (
 	lock      = &sync.Mutex{}
 	singleApi *API
 )
-
+//go:generate mockery --name TelegramService
+type TelegramService interface {
+	SendResponse(chatID int, val url.Values) error
+}
 type API struct {
 	client        HTTPClientPost
 	url           string
