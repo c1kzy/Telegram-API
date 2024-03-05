@@ -7,7 +7,7 @@ This Go package provides a convenient way to interact with the Telegram Bot API.
 To use this package, you can install it using the following `go get` command:
 
 ```bash
-go get "git.foxminded.ua/foxstudent106270/telegramapi.git"
+go get "github.com/c1kzy/Telegram-API"
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ package main
 
 import (
 	"fmt"
-	"git.foxminded.ua/foxstudent106270/telegramapi.git"
+	"github.com/c1kzy/Telegram-API"
 )
 
 func main() {
